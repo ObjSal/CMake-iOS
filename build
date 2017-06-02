@@ -1,0 +1,16 @@
+#!/bin/sh
+
+rm -r ./*.xcodeproj
+rm -r ./*.build
+rm -r ./CMakeFiles
+rm -r ./CMakeScripts
+rm -r ./Debug-iphonesimulator
+rm -r ./Debug-iphoneos
+rm -r ./Debug-universal
+rm -r ./Release-iphonesimulator
+rm -r ./Release-iphoneos
+rm -r ./Release-universal
+rm ./CMakeCache.txt
+rm ./cmake_install.cmake
+
+cmake -DCMAKE_TOOLCHAIN_FILE=./iOS.cmake -GXcode .
