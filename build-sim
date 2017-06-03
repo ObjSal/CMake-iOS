@@ -1,0 +1,6 @@
+#!/bin/sh
+
+rm -r ./build.sim
+
+cmake -DCMAKE_TOOLCHAIN_FILE=./ios.cmake -DIOS_PLATFORM=SIM -H. -Bbuild.sim -GXcode
+cmake --build build.sim/ --config Release

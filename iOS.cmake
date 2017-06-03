@@ -1,13 +1,9 @@
-# This file is based off of the Platform/Darwin.cmake and Platform/UnixPaths.cmake
-# files which are included with CMake 2.8.4
-# It has been altered for iOS development
-
 # Options:
 #
-# IOS_PLATFORM = OS (default) or SIMULATOR
+# IOS_PLATFORM = OS (default) or SIM
 #   This decides if SDKS will be selected from the iPhoneOS.platform or iPhoneSimulator.platform folders
 #   OS - the default, used to build for iPhone and iPad physical devices, which have an arm arch.
-#   SIMULATOR - used to build for the Simulator platforms, which have an x86 arch.
+#   SIM - used to build for the Simulator platforms, which have an x86 arch.
 #
 # CMAKE_IOS_DEVELOPER_ROOT = automatic(default) or /path/to/platform/Developer folder
 #   By default this location is automatcially chosen based on the IOS_PLATFORM value above.
@@ -47,8 +43,8 @@ endif (CMAKE_UNAME)
 
 # Force the compilers to gcc for iOS
 include (CMakeForceCompiler)
-CMAKE_FORCE_C_COMPILER (/usr/bin/gcc Apple)
-CMAKE_FORCE_CXX_COMPILER (/usr/bin/g++ Apple)
+CMAKE_FORCE_C_COMPILER (/usr/bin/clang Clang)
+CMAKE_FORCE_CXX_COMPILER (/usr/bin/clang++ Clang)
 set(CMAKE_AR ar CACHE FILEPATH "" FORCE)
 
 # Skip the platform compiler checks for cross compiling
@@ -105,17 +101,13 @@ set (BUILD_ARM64 ${BUILD_ARM64} CACHE STRING "Build arm64 arch or not")
 # Check the platform selection and setup for developer root
 if (${IOS_PLATFORM} STREQUAL "OS")
 	set (IOS_PLATFORM_LOCATION "iPhoneOS.platform")
-
-	# This causes the installers to properly locate the output libraries
 	set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphoneos")
-elseif (${IOS_PLATFORM} STREQUAL "SIMULATOR")
+elseif (${IOS_PLATFORM} STREQUAL "SIM")
     set (SIMULATOR true)
 	set (IOS_PLATFORM_LOCATION "iPhoneSimulator.platform")
-
-	# This causes the installers to properly locate the output libraries
 	set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "-iphonesimulator")
 else (${IOS_PLATFORM} STREQUAL "OS")
-	message (FATAL_ERROR "Unsupported IOS_PLATFORM value selected. Please choose OS or SIMULATOR")
+	message (FATAL_ERROR "Unsupported IOS_PLATFORM value selected:'${IOS_PLATFORM}'. Please choose OS or SIM")
 endif (${IOS_PLATFORM} STREQUAL "OS")
 
 # Setup iOS developer location unless specified manually with CMAKE_IOS_DEVELOPER_ROOT
@@ -152,7 +144,7 @@ set (CMAKE_OSX_SYSROOT ${CMAKE_IOS_SDK_ROOT} CACHE PATH "Sysroot used for iOS su
 # set the architecture for iOS 
 if (${IOS_PLATFORM} STREQUAL "OS")
     set (IOS_ARCH armv7 armv7s arm64)
-elseif (${IOS_PLATFORM} STREQUAL "SIMULATOR")
+elseif (${IOS_PLATFORM} STREQUAL "SIM")
     set (IOS_ARCH i386 x86_64)
 endif (${IOS_PLATFORM} STREQUAL "OS")
 
@@ -189,9 +181,7 @@ macro (find_host_package)
 	set (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY NEVER)
 	set (CMAKE_FIND_ROOT_PATH_MODE_INCLUDE NEVER)
 	set (IOS FALSE)
-
 	find_package(${ARGN})
-
 	set (IOS TRUE)
 	set (CMAKE_FIND_ROOT_PATH_MODE_PROGRAM ONLY)
 	set (CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
