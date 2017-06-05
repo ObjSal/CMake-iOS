@@ -3,10 +3,10 @@
 rm -r ./lib
 
 mkdir -p lib/ios
-cp build.ios/Debug-iphoneos/libtvs.a lib/ios/libtvs.a
+cp build.ios/Debug-iphoneos/libXXX.a lib/ios/libXXX.a
 
 mkdir -p lib/sim
-cp build.sim/Debug-iphonesimulator/libtvs.a lib/sim/libtvs.a
+cp build.sim/Debug-iphonesimulator/libXXX.a lib/sim/libXXX.a
 
 mkdir -p lib/generic
-lipo -create "lib/ios/libtvs.a" "lib/sim/libtvs.a" -output "lib/generic/libtvs.a"
+lipo -create "lib/ios/libXXX.a" "lib/sim/libXXX.a" -output "lib/generic/libXXX.a"
