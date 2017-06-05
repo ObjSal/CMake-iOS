@@ -1,0 +1,12 @@
+#!/bin/sh
+
+rm -r ./lib
+
+mkdir -p lib/ios
+cp build.ios/Debug-iphoneos/libtvs.a lib/ios/libtvs.a
+
+mkdir -p lib/sim
+cp build.sim/Debug-iphonesimulator/libtvs.a lib/sim/libtvs.a
+
+mkdir -p lib/generic
+lipo -create "lib/ios/libtvs.a" "lib/sim/libtvs.a" -output "lib/generic/libtvs.a"
